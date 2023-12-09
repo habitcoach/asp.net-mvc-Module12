@@ -1,0 +1,83 @@
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Use this page to detail your site's privacy policy.</p>
+
+@model DateTime?
+
+<div class="row">
+
+    <span> Current Time: @DateTime.Now.ToString();
+
+    </span>
+    <span>
+        Cached Time: @Model.Value.ToString();
+
+    </span>
+
+</div>
+
+
+
+<script>
+    // Set the target time for the countdown (in seconds)
+    const targetTimeInSeconds = 20; // 1 hour
+    let remainingTime = targetTimeInSeconds;
+
+    // Function to update the timer display
+    function updateTimerDisplay() {
+        const timerElement = document.getElementById('timer');
+        const hours = Math.floor(remainingTime / 3600);
+        const minutes = Math.floor((remainingTime % 3600) / 60);
+        const seconds = remainingTime % 60;
+
+        timerElement.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+
+    // Function to start the timer
+    function startTimer() {
+        updateTimerDisplay();
+
+        const timerInterval = setInterval(function () {
+            if (remainingTime <= 0) {
+                clearInterval(timerInterval);
+                alert("Time's up!");
+            } else {
+                remainingTime--;
+                updateTimerDisplay();
+            }
+        }, 1000); // Update every second (1000 milliseconds)
+    }
+
+    // Check if the timer was already started in a previous session
+    const startTime = sessionStorage.getItem('timerStartTimePrivacy');
+
+    if (startTime) {
+        // Calculate the time elapsed since the timer was first started
+        const currentTime = Math.floor(Date.now() / 1000);
+        const elapsedSeconds = currentTime - parseInt(startTime, 10);
+
+        // Adjust the remaining time
+        remainingTime = Math.max(targetTimeInSeconds - elapsedSeconds, 0);
+    }
+
+    // Start the timer
+    startTimer();
+
+    // Store the initial start time in sessionStorage
+    if (!startTime) {
+        sessionStorage.setItem('timerStartTimePrivacy', Math.floor(Date.now() / 1000).toString());
+    }
+
+
+</script>
+
+
+
+
+
+
+
+

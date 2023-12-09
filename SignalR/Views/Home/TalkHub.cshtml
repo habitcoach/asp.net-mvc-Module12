@@ -1,0 +1,58 @@
+﻿@model SignalR.TalkHub
+
+<div>
+
+    <input type="text" id="user" placeholder="enter name" />
+
+    <input type="text" id="message" placeholder="enter message" />
+
+</div>
+
+<div>
+
+    <input type="button" value="Send Message" id="send" />
+
+</div>
+
+<div id="talkLog" />
+
+@*<script src="~/microsoft/signalr/dist/browser/signalr.min.js"></script>*@
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+
+<script src="~/js/talk.js"></script>
+
+<script>
+var connection = new signalR.HubConnectionBuilder()
+
+    .withUrl("/Talk")
+
+    .build();
+
+connection.on("NewMessage", (user, message) => {
+
+    var li = document.createElement("li");
+
+    document.getElementById("talkLog").appendChild(li);
+
+    li.textContent = `${user}: ${message}`;
+
+});
+
+connection.start().catch(err => console.error(err.toString()));
+
+document.getElementById("send").addEventListener("click", function (event) {
+
+    var user = document.getElementById("user").value;
+
+    var message = document.getElementById("message").value;
+
+    connection.invoke("SendMessage", user, message).catch(function (err) {
+
+        return console.error(err.toString());
+
+    });
+
+    event.preventDefault();
+
+});
+</script>

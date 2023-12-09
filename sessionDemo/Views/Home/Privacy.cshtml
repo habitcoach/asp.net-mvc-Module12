@@ -1,0 +1,34 @@
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Use this page to detail your site's privacy policy.</p>
+<h1>@ViewBag.username</h1>
+
+@{
+    // Retrieve session key
+    string sessionValue = Context.Session.GetString("UserName");
+}
+
+<p1>@sessionValue</p1>
+
+<h1>From cookie</h1>
+<h1>@ViewBag.UsernameCookie</h1>
+
+
+@*Using the HTML5 Web Storage API*@
+
+
+<p id="usernameDisplay"></p>
+<p id="userRoleDisplay"></p>
+
+<script>
+    // Retrieving data from sessionStorage
+    var username = sessionStorage.getItem('username');
+    var userRole = sessionStorage.getItem('userRole');
+
+    // Displaying the retrieved data in <p> tags
+    document.getElementById('usernameDisplay').innerText = 'Username: ' + username;
+    document.getElementById('userRoleDisplay').innerText = 'User Role: ' + userRole;
+</script>
